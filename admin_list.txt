@@ -1,0 +1,5 @@
+C:\Users\HP\Desktop\LovableMigration\app\admin\(dashboard)\leads\page.tsx
+C:\Users\HP\Desktop\LovableMigration\app\admin\(dashboard)\posts\page.tsx
+C:\Users\HP\Desktop\LovableMigration\app\admin\(dashboard)\posts\edit\[id]\page.tsx
+C:\Users\HP\Desktop\LovableMigration\app\admin\(dashboard)\posts\new\page.tsx
+C:\Users\HP\Desktop\LovableMigration\app\admin\login\page.tsx

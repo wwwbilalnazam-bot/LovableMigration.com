@@ -1,26 +1,232 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: hsl(153 60% 53%);
+  --color-primary-dark: hsl(153 60% 40%);
+  --color-bg: hsl(200 60% 2%);
+  --color-surface: hsl(200 40% 6%);
+  --color-card: hsl(200 30% 9%);
+  --color-border: hsl(200 10% 15%);
+  --color-whatsapp: hsl(142 70% 49%);
+  
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
+  --color-wa: #25d366;
+  
+  --font-inter: "Inter", sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #020608;
+  --bg-surface: #0a0c0d;
+  --bg-card: #111415;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(62, 207, 142, 0.3);
+  --text: #ffffff;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  --primary: #3ecf8e;
+  --primary-glow: rgba(62, 207, 142, 0.15);
+  --wa: #25d366;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* ── Typography ── */
+.h1 {
+  font-size: clamp(2rem, 8vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.h2 {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #ffffff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.primary-gradient-text {
+  background: linear-gradient(to right, #3ecf8e, #2fa875);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Components ── */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 bg-primary text-black font-bold px-6 py-3 rounded-xl transition-all duration-200 active:scale-95 hover:brightness-110 shadow-[0_0_20px_rgba(62,207,142,0.2)];
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 bg-transparent text-white border border-border font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 active:scale-95;
+}
+
+.btn-wa {
+  @apply inline-flex items-center justify-center gap-2 bg-wa text-white font-bold px-6 py-3 rounded-xl transition-all duration-200 active:scale-95 hover:shadow-[0_0_25px_rgba(37,211,102,0.3)];
+}
+
+.glass-card {
+  @apply bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 transition-all duration-300 hover:border-[var(--primary)]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1;
+}
+
+.pill {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider;
+}
+
+/* ── Layout ── */
+.nav-wrap {
+  @apply sticky top-0 z-50 bg-[#020608]/80 backdrop-blur-md border-b border-[var(--border)];
+}
+
+.section-padding {
+  @apply py-24 px-4 sm:px-6;
+}
+
+/* ── Decorative ── */
+.bg-glow {
+  background: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── Animations ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* ── WhatsApp Floating ── */
+.whatsapp-float {
+  @apply fixed bottom-12 right-2 md:bottom-8 md:right-8 z-[999] w-12 h-12 md:w-14 md:h-14 rounded-full bg-[var(--wa)] flex items-center justify-center text-white shadow-lg transition-transform hover:scale-110 active:scale-95;
+  animation: wa-pulse 2s infinite;
+}
+
+@keyframes wa-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* ── Prose (Blog Content) ── */
+.prose {
+  color: var(--text-muted);
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.prose h2 {
+  @apply text-white font-black italic text-2xl mt-12 mb-6;
+}
+
+.prose h3 {
+  @apply text-white font-black italic text-xl mt-10 mb-4;
+}
+
+.prose p {
+  @apply mb-6;
+}
+
+.prose ul, .prose ol {
+  @apply mb-8 ml-6 space-y-3 list-disc;
+}
+
+.prose li {
+  @apply pl-2;
+}
+
+.prose strong {
+  @apply text-white font-bold;
+}
+
+.prose a {
+  @apply text-primary font-bold hover:underline;
+}
+
+.prose code {
+  @apply bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-primary;
+}
+
+.prose pre {
+  @apply bg-black/50 border border-white/10 p-6 rounded-xl my-8 overflow-x-auto;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-text-muted text-xs;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-primary bg-primary/5 p-6 rounded-r-xl italic my-10;
+}
+
+/* ── Utilities ── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Legacy Compat (Minimal) ── */
+.btn-green { @extend .btn-primary; }
+.btn-ghost { @extend .btn-secondary; }
+.f-input { @apply w-full bg-white/5 border border-[var(--border)] rounded-lg p-3 text-white focus:border-[var(--primary)] outline-none transition-colors; }
+.section-h { @extend .h2; }
+.g-card { @extend .glass-card; }
+.step-num { @apply w-12 h-12 rounded-full border-2 border-[var(--primary)] flex items-center justify-center text-[var(--primary)] font-bold; }
