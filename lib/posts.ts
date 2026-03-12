@@ -1,5 +1,5 @@
 import postsData from "@/data/posts.json";
-import { supabase } from "./supabase";
+import { supabase, getSupabaseAdmin } from "./supabase";
 
 export interface Post {
   id: string;
@@ -85,7 +85,7 @@ export async function getRecentPosts(limit = 3): Promise<Post[]> {
 }
 
 export async function getAllPostsAdmin(): Promise<Post[]> {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabaseAdmin()
     .from('posts')
     .select('*')
     .order('created_at', { ascending: false });
@@ -98,7 +98,7 @@ export async function getAllPostsAdmin(): Promise<Post[]> {
 }
 
 export async function getPostById(id: string): Promise<Post | undefined> {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabaseAdmin()
     .from('posts')
     .select('*')
     .eq('id', id)
@@ -112,7 +112,7 @@ export async function getPostById(id: string): Promise<Post | undefined> {
 }
 
 export async function createPost(post: Omit<Post, "id">): Promise<Post> {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabaseAdmin()
     .from('posts')
     .insert([{
       title: post.title,
@@ -156,7 +156,7 @@ export async function updatePost(id: string, post: Partial<Post>): Promise<Post>
   if (post.readTime !== undefined) updateData.read_time = post.readTime;
   if (post.faqs !== undefined) updateData.faqs = post.faqs;
 
-  const { data, error } = await supabase
+  const { data, error } = await getSupabaseAdmin()
     .from('posts')
     .update(updateData)
     .eq('id', id)
@@ -168,7 +168,7 @@ export async function updatePost(id: string, post: Partial<Post>): Promise<Post>
 }
 
 export async function deletePost(id: string): Promise<boolean> {
-  const { error } = await supabase
+  const { error } = await getSupabaseAdmin()
     .from('posts')
     .delete()
     .eq('id', id);
