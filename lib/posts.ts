@@ -84,3 +84,98 @@ export async function getRecentPosts(limit = 3): Promise<Post[]> {
   return posts.slice(0, limit);
 }
 
+export async function getAllPostsAdmin(): Promise<Post[]> {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error || !data) {
+    return postsData as Post[];
+  }
+
+  return data.map(mapPost);
+}
+
+export async function getPostById(id: string): Promise<Post | undefined> {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) {
+    return (postsData as Post[]).find((p) => p.id === id);
+  }
+
+  return mapPost(data);
+}
+
+export async function createPost(post: Omit<Post, "id">): Promise<Post> {
+  const { data, error } = await supabase
+    .from('posts')
+    .insert([{
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
+      content: post.content,
+      meta_title: post.metaTitle,
+      meta_description: post.metaDescription,
+      keywords: post.keywords,
+      category: post.category,
+      tags: post.tags,
+      featured_image: post.featuredImage,
+      author: post.author,
+      published_at: post.publishedAt,
+      published: post.published,
+      read_time: post.readTime,
+      faqs: post.faqs
+    }])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return mapPost(data);
+}
+
+export async function updatePost(id: string, post: Partial<Post>): Promise<Post> {
+  const updateData: any = {};
+  if (post.title !== undefined) updateData.title = post.title;
+  if (post.slug !== undefined) updateData.slug = post.slug;
+  if (post.excerpt !== undefined) updateData.excerpt = post.excerpt;
+  if (post.content !== undefined) updateData.content = post.content;
+  if (post.metaTitle !== undefined) updateData.meta_title = post.metaTitle;
+  if (post.metaDescription !== undefined) updateData.meta_description = post.metaDescription;
+  if (post.keywords !== undefined) updateData.keywords = post.keywords;
+  if (post.category !== undefined) updateData.category = post.category;
+  if (post.tags !== undefined) updateData.tags = post.tags;
+  if (post.featuredImage !== undefined) updateData.featured_image = post.featuredImage;
+  if (post.author !== undefined) updateData.author = post.author;
+  if (post.publishedAt !== undefined) updateData.published_at = post.publishedAt;
+  if (post.published !== undefined) updateData.published = post.published;
+  if (post.readTime !== undefined) updateData.read_time = post.readTime;
+  if (post.faqs !== undefined) updateData.faqs = post.faqs;
+
+  const { data, error } = await supabase
+    .from('posts')
+    .update(updateData)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return mapPost(data);
+}
+
+export async function deletePost(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting post:', error);
+    return false;
+  }
+  return true;
+}
