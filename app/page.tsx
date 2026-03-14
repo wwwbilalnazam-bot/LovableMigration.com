@@ -11,7 +11,8 @@ import Pricing from "@/components/sections/Pricing";
 import Process from "@/components/sections/Process";
 import LeadCapture from "@/components/sections/LeadCapture";
 import FAQ from "@/components/sections/FAQ";
-import Testimonials from "@/components/sections/Testimonials";
+import FounderSection from "@/components/sections/FounderSection";
+import ReviewsSection from "@/components/sections/ReviewsSection";
 import BlogPreview from "@/components/blog/BlogPreview";
 import SEOContent from "@/components/sections/SEOContent";
 
@@ -34,7 +35,8 @@ export default function HomePage() {
         <Services />
         <Pricing />
         <Process />
-        <Testimonials />
+        <FounderSection />
+        <ReviewsSection />
         <LeadCapture />
         <BlogPreview />
         <SEOContent />

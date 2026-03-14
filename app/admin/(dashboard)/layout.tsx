@@ -1,20 +1,23 @@
-import { 
-  BarChart3, 
-  Users, 
-  FileText, 
-  Settings, 
-  LogOut, 
+import {
+  BarChart3,
+  Users,
+  FileText,
+  Settings,
+  LogOut,
   Home,
   MessageSquare,
-  Globe
+  Globe,
+  Star,
+  UserCircle,
 } from "lucide-react";
 import Link from "next/link";
-import { headers } from "next/headers";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: <BarChart3 size={18} /> },
   { href: "/admin/posts", label: "Blog Posts", icon: <FileText size={18} /> },
   { href: "/admin/leads", label: "Client Inquiries", icon: <MessageSquare size={18} /> },
+  { href: "/admin/founder", label: "Founder Profile", icon: <UserCircle size={18} /> },
+  { href: "/admin/reviews", label: "Client Reviews", icon: <Star size={18} /> },
   { href: "/admin/analytics", label: "Advanced Insights", icon: <Globe size={18} /> },
   { href: "/admin/settings", label: "Operational Config", icon: <Settings size={18} /> },
 ];

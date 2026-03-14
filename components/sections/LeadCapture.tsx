@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Send, ChevronDown } from "lucide-react";
+import { Send, ChevronDown, Cloud, Server, HelpCircle } from "lucide-react";
 
 const WA = "https://wa.me/97470896755?text=Hi%2C%20I%20want%20to%20migrate%20my%20Lovable%20Cloud%20app%20to%20Supabase";
 
@@ -12,8 +12,42 @@ const WaIcon = () => (
 
 import { supabase } from "@/lib/supabase";
 
+const DEPLOYMENT_OPTIONS = [
+  {
+    value: "supabase_cloud",
+    label: "Supabase Cloud",
+    description: "Managed hosting",
+    icon: <Cloud size={16} />,
+    activeClass: "border-primary/60 bg-primary/10 text-primary",
+    dotClass: "bg-primary",
+  },
+  {
+    value: "self_hosted_supabase",
+    label: "Self-Hosted",
+    description: "On my servers",
+    icon: <Server size={16} />,
+    activeClass: "border-amber-400/60 bg-amber-400/10 text-amber-400",
+    dotClass: "bg-amber-400",
+  },
+  {
+    value: "not_sure",
+    label: "Not Sure",
+    description: "Need advice",
+    icon: <HelpCircle size={16} />,
+    activeClass: "border-blue-400/60 bg-blue-400/10 text-blue-400",
+    dotClass: "bg-blue-400",
+  },
+];
+
 export default function LeadCapture() {
-  const [form, setForm] = useState({ name: "", email: "", projectUrl: "", projectSize: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    projectUrl: "",
+    projectSize: "",
+    message: "",
+    deploymentPreference: "not_sure",
+  });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -31,7 +65,7 @@ export default function LeadCapture() {
       });
 
       if (!res.ok) throw new Error("Submission failed");
-      
+
       setStatus("success");
     } catch (err) {
       console.error('Error submitting lead:', err);
@@ -156,10 +190,10 @@ export default function LeadCapture() {
                       Estimated Project Size
                     </label>
                     <div className="relative group">
-                      <select 
-                        name="projectSize" 
-                        value={form.projectSize} 
-                        onChange={handleChange} 
+                      <select
+                        name="projectSize"
+                        value={form.projectSize}
+                        onChange={handleChange}
                         className="f-input appearance-none bg-transparent cursor-pointer relative z-10 pr-12"
                       >
                         <option value="" className="bg-bg">Select size...</option>
@@ -173,6 +207,39 @@ export default function LeadCapture() {
                       </div>
                     </div>
                   </div>
+
+                  {/* ── Deployment Preference ── */}
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-text-subtle ml-1">
+                      Backend Deployment Preference
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {DEPLOYMENT_OPTIONS.map(opt => {
+                        const isActive = form.deploymentPreference === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => setForm(f => ({ ...f, deploymentPreference: opt.value }))}
+                            className={`flex flex-col items-center gap-2 p-3 rounded-xl border text-center transition-all duration-200 ${
+                              isActive
+                                ? opt.activeClass
+                                : "border-white/10 text-text-muted hover:border-white/20 hover:text-white"
+                            }`}
+                          >
+                            <span className={isActive ? "" : "opacity-50"}>{opt.icon}</span>
+                            <span className="text-[11px] font-black uppercase tracking-wider leading-tight">
+                              {opt.label}
+                            </span>
+                            <span className="text-[9px] text-current opacity-70 leading-tight">
+                              {opt.description}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-text-subtle ml-1">
                       Project Details & Goals

@@ -5,12 +5,17 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const NOTIFICATION_EMAIL = "info@onelinker.ai";
 
+const DEPLOYMENT_LABELS: Record<string, string> = {
+  supabase_cloud: "Supabase Cloud",
+  self_hosted_supabase: "Self-Hosted Supabase",
+  not_sure: "Not Sure (Needs Advice)",
+};
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, projectUrl, projectSize, message } = body;
+    const { name, email, projectUrl, projectSize, message, deploymentPreference } = body;
 
-    // 1. Save to Supabase
     const supabaseAdmin = getSupabaseAdmin();
     const { data: leadData, error: dbError } = await supabaseAdmin
       .from('leads')
@@ -21,7 +26,8 @@ export async function POST(req: Request) {
           email: email,
           project_url: projectUrl,
           message: `Size: ${projectSize}. Details: ${message}`,
-          source: 'contact_form'
+          source: 'contact_form',
+          deployment_preference: deploymentPreference || 'not_sure',
         }
       ])
       .select()
@@ -32,12 +38,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to save lead info" }, { status: 500 });
     }
 
-    // 2. Send Email Notification via Resend
-    // We only attempt this if RESEND_API_KEY is present
     if (resend) {
       try {
+        const deployLabel = DEPLOYMENT_LABELS[deploymentPreference] ?? deploymentPreference ?? 'Not specified';
         await resend.emails.send({
-          from: "Lovable Migration <notifications@resend.dev>", // Or verified domain
+          from: "Lovable Migration <notifications@resend.dev>",
           to: NOTIFICATION_EMAIL,
           subject: `New Lead: ${name}`,
           html: `
@@ -47,6 +52,7 @@ export async function POST(req: Request) {
               <p><strong>Email:</strong> ${email}</p>
               <p><strong>Project URL:</strong> ${projectUrl || 'N/A'}</p>
               <p><strong>Project Size:</strong> ${projectSize}</p>
+              <p><strong>Deployment Preference:</strong> <span style="color:#3ecf8e;font-weight:bold">${deployLabel}</span></p>
               <p><strong>Message:</strong></p>
               <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; border-left: 4px solid #3ecf8e;">
                 ${message}
@@ -58,7 +64,6 @@ export async function POST(req: Request) {
         });
       } catch (emailError) {
         console.error('Email notification error:', emailError);
-        // We don't return an error to the user if ONLY the email fails
       }
     }
 

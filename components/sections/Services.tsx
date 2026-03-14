@@ -1,4 +1,4 @@
-import { Database, Lock, Plug, Rocket, HardDrive, TestTube } from "lucide-react";
+import { Database, Lock, Plug, Rocket, HardDrive, TestTube, Cloud, Server, TrendingDown } from "lucide-react";
 
 const WA = "https://wa.me/97470896755?text=Hi%2C%20I%20want%20to%20migrate%20my%20Lovable%20Cloud%20app%20to%20Supabase";
 
@@ -54,16 +54,19 @@ export default function Services() {
 
       <div className="container max-w-6xl mx-auto px-6 relative z-10">
 
+        {/* Section header */}
         <div className="text-center mb-16">
           <span className="pill mb-4">Migration Services</span>
           <h2 className="h2 mb-4">
             Professional <span className="primary-gradient-text italic">Lovable Migration</span> Service
           </h2>
           <p className="text-text-muted max-w-2xl mx-auto text-lg leading-relaxed">
-            We handle every technical detail of your <strong>Lovable Cloud to Supabase migration</strong>, from secure data exports to production-ready API setup.
+            We handle every technical detail of your <strong>Lovable Cloud to Supabase migration</strong>, from secure data exports to production-ready API setup.{" "}
+            After migration, choose between <strong className="text-white">Supabase Cloud</strong> or deploying Supabase on your own servers for maximum control.
           </p>
         </div>
 
+        {/* Services grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
           {services.map(s => (
             <div key={s.title} className="glass-card flex flex-col group hover:scale-[1.02]">
@@ -71,9 +74,7 @@ export default function Services() {
                 {s.icon}
               </div>
               <h3 className="text-lg font-black text-white mb-3 tracking-tight">{s.title}</h3>
-              <p className="text-text-muted text-sm leading-relaxed mb-6">
-                {s.description}
-              </p>
+              <p className="text-text-muted text-sm leading-relaxed mb-6">{s.description}</p>
               <ul className="mt-auto space-y-3 pt-6 border-t border-white/5">
                 {s.items.map(item => (
                   <li key={item} className="flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-white/40 group-hover:text-white/70 transition-colors">
@@ -84,6 +85,92 @@ export default function Services() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* ── Deployment Options ── */}
+        <div className="mb-20">
+          <div className="text-center mb-10">
+            <span className="pill mb-4">Backend Deployment</span>
+            <h3 className="text-2xl lg:text-3xl font-black text-white mb-3 tracking-tight">
+              Choose Your <span className="primary-gradient-text italic">Supabase Deployment</span>
+            </h3>
+            <p className="text-text-muted max-w-xl mx-auto">
+              After migration, we deploy Supabase exactly where you need it — managed cloud or full ownership on your servers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Option 1 — Supabase Cloud */}
+            <div className="glass-card flex flex-col gap-5 group hover:border-primary/40 transition-all duration-300">
+              <div className="flex items-start justify-between">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                  <Cloud size={24} />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border text-primary bg-primary/10 border-primary/20">
+                  Quick Start
+                </span>
+              </div>
+              <div>
+                <h4 className="text-xl font-black text-white tracking-tight">Supabase Cloud</h4>
+                <p className="text-[10px] font-black uppercase tracking-widest text-text-subtle mt-0.5">Official Hosted Platform</p>
+              </div>
+              <p className="text-text-muted text-sm leading-relaxed">
+                Fully managed infrastructure hosted by Supabase. Get your migrated project running in minutes with automatic backups, scaling, and zero server maintenance.
+              </p>
+              <ul className="space-y-2.5 pt-4 border-t border-white/5 mt-auto">
+                {["Fully managed infrastructure", "Automatic backups & scaling", "Quick setup — no DevOps needed", "Ideal for startups & MVPs"].map(item => (
+                  <li key={item} className="flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-white/40 group-hover:text-white/70 transition-colors">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary transition-colors flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Option 2 — Self-Hosted */}
+            <div className="glass-card flex flex-col gap-5 group hover:border-amber-400/40 transition-all duration-300 border-amber-400/10">
+              <div className="flex items-start justify-between">
+                <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400 group-hover:bg-amber-400 group-hover:text-black transition-all duration-300">
+                  <Server size={24} />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border text-amber-400 bg-amber-400/10 border-amber-400/20">
+                  Maximum Control
+                </span>
+              </div>
+              <div>
+                <h4 className="text-xl font-black text-white tracking-tight">Self-Hosted Supabase</h4>
+                <p className="text-[10px] font-black uppercase tracking-widest text-text-subtle mt-0.5">Deploy on Your Own Servers</p>
+              </div>
+              <p className="text-text-muted text-sm leading-relaxed">
+                Deploy the full Supabase stack on your own VPS or cloud servers. Full infrastructure ownership, complete data sovereignty, and significant long-term cost savings.
+              </p>
+              <ul className="space-y-2.5 pt-4 border-t border-white/5 mt-auto">
+                {["Deploy on any VPS or cloud", "Full infrastructure control", "Significant long-term cost savings", "Ideal for high-traffic applications"].map(item => (
+                  <li key={item} className="flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-white/40 group-hover:text-white/70 transition-colors">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400/40 group-hover:bg-amber-400 transition-colors flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Cost benefit note */}
+          <div className="glass-card !p-6 border-amber-400/10 bg-amber-400/5 flex items-start gap-4 hover:border-amber-400/20 hover:translate-y-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center text-amber-400 flex-shrink-0 mt-0.5">
+              <TrendingDown size={20} />
+            </div>
+            <p className="text-sm text-text-muted leading-relaxed">
+              <span className="text-white font-black">Cost Savings with Self-Hosted: </span>
+              Many growing applications choose self-hosted Supabase to{" "}
+              <span className="text-amber-400 font-bold">significantly reduce backend costs</span>{" "}
+              while maintaining full control over their infrastructure.{" "}
+              Not sure which is right for you?{" "}
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">
+                Ask us for free advice →
+              </a>
+            </p>
+          </div>
         </div>
 
         {/* CTA */}
